@@ -37,3 +37,14 @@ npm run build
 ```sh
 npm run lint
 ```
+
+- [ ] Make Todo Component with Add button
+- [ ] Make Grobal Add button Button
+- [ ] Proper CSS with dark mode
+- [ ] Firebase Integration (Vuefire)
+- [ ] User Api Integration
+- [ ] Pinia Setup for User
+- [ ] Session Management
+- [ ] Task Api Integration
+- [ ] Note Api integration
+- [ ] Deploy
