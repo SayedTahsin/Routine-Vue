@@ -15,7 +15,9 @@ import axios from '../plugins/axios';
 import { useUserStore } from '@/stores/user';
 import { auth, provider } from '@/firebase';
 import { signInWithPopup } from 'firebase/auth';
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
 const userStore = useUserStore();
 
 async function signInWithGoogle() {
@@ -33,6 +35,7 @@ async function signInWithGoogle() {
         });
 
         userStore.setUser(userPayload);
+        router.replace({ name: 'routine' });
     } catch (err: unknown) {
         console.error('Login error:', err);
     }
