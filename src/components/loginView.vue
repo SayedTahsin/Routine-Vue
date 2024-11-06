@@ -24,7 +24,7 @@ async function signInWithGoogle() {
     try {
         const result = await signInWithPopup(auth, provider);
         const googleUser = result.user;
-        const userPayload = { mail: googleUser.email || '', id: googleUser.uid || '', photoUrl: googleUser.photoURL || '', name: googleUser.displayName || '' };
+        const userPayload = { mail: googleUser.email || '', photoUrl: googleUser.photoURL || '', name: googleUser.displayName || '' };
 
         await axios.post('api/users', userPayload, {
             withCredentials: true
