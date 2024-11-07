@@ -40,11 +40,12 @@ npm run lint
 
 - [x] Make Todo Component with Add button
 - [x] Make Grobal Add button Button
-- [ ] Firebase Integration (Vuefire)
-- [ ] User Api Integration
-- [ ] Pinia Setup for User
-- [ ] Session Management
+- [x] Firebase Integration (Vuefire)
+- [x] User Api Integration
+- [x] Pinia Setup for User
+- [x] Session Management
 - [ ] Task Api Integration
 - [ ] Note Api integration
-- [ ] Proper CSS with dark mode
-- [ ] Deploy
+- [ ] Proper CSS with dark mode w primary/secondary color
+- [ ] fix CORS Error
+- [ ] Deploy on vercel
