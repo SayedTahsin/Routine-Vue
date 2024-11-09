@@ -1,6 +1,11 @@
 <template>
   <div class="p-2 flex">
-    <TodoList v-for="category in fixedCategories" :title="category" :list="catagorizedTask[category]" :key="category" />
+    <TodoList v-for="category in fixedCategories" :title="category" :list="catagorizedTask[category]"
+      :key="category + '-' + relaodCount" @reload="getTasksByMail" />
+  </div>
+  <div class="p-2 flex">
+    <TodoList v-for="category in categoriesWOWeeks" :title="category" :list="catagorizedTask[category]"
+      :key="category + '-' + relaodCount" @reload="getTasksByMail" />
   </div>
 </template>
 
@@ -21,13 +26,13 @@ interface Task {
   category: string
 }
 
-const fixedCategories = ['saturday', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday']
+const fixedCategories = ['SATURDAY', 'SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY']
 
 const catagorizedTask = ref<Record<string, Array<Task>>>({})
-
-
-
+const categoriesWOWeeks = ref<Array<string>>([])
+const relaodCount = ref(0)
 const getTasksByMail = async () => {
+  catagorizedTask.value = {}
   const url = `/api/tasks/${userMail.value}`
   try {
     const resp = await axios.get(url)
@@ -35,10 +40,13 @@ const getTasksByMail = async () => {
       if (!catagorizedTask.value[ele.category]) catagorizedTask.value[ele.category] = []
       catagorizedTask.value[ele.category].push(ele)
     })
-    console.log(catagorizedTask.value)
+    Object.keys(catagorizedTask.value).forEach((val) => {
+      if (!fixedCategories.includes(val)) categoriesWOWeeks.value.push(val)
+    })
   } catch (e) {
     console.log(e)
   }
+  relaodCount.value++
 }
 
 watch(() => userStore.user, (newUser) => {

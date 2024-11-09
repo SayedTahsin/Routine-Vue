@@ -104,10 +104,10 @@ function toggleDarkMode() {
 }
 
 onMounted(() => {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        isDarkMode.value = true
-        document.documentElement.classList.add('dark')
-    }
+    // if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    //     isDarkMode.value = true
+    //     document.documentElement.classList.add('dark')
+    // }
 })
 
 const showModal = ref(false)
