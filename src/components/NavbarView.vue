@@ -122,9 +122,23 @@ function closeModal() {
     newTask.value = { category: '', text: '' }
 }
 
+const addTask$api = async (text: string, category: string) => {
+    const url = `/api/tasks`
+    const body = {
+        text,
+        category,
+        mail: userInfo.value.mail
+    }
+    try {
+        await axios.post(url, body)
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 function addTask() {
     if (newTask.value.category.trim() && newTask.value.text.trim()) {
-        console.log('New Task Added:', newTask.value)
+        addTask$api(newTask.value.text.trim(), newTask.value.category.trim().toUpperCase())
         closeModal()
     }
 }

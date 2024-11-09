@@ -1,58 +1,66 @@
 <template>
-    <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 max-w-md mx-auto">
-        <!-- Title -->
-        <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4">{{ title }}</h2>
+    <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-3 w-72 h-80 mx-[1px] flex flex-col">
+        <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-2">{{ title }}</h2>
 
-        <!-- To-do List -->
-        <ul class="space-y-2 mb-4">
+        <!-- List of tasks with scrollable overflow -->
+        <ul class="space-y-1 flex-grow overflow-y-auto w-full">
             <li v-for="(item, index) in list" :key="index"
-                class="flex items-center justify-between gap-2 p-2 rounded-lg border border-gray-200 dark:border-gray-700">
-                <div class="flex items-center gap-2">
-                    <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600 dark:text-blue-400"
-                        v-model="item.completed" />
-                    <span :class="{ 'line-through text-gray-500 dark:text-gray-400': item.completed }">
+                class="flex items-center justify-between gap-2 p-1 rounded border border-gray-200 dark:border-gray-700">
+                <div class="flex items-center gap-1">
+                    <input type="checkbox" class="h-4 w-4 text-blue-600 dark:text-blue-400" v-model="item.status" />
+                    <span :class="{ 'line-through text-gray-500 dark:text-gray-400': item.status }" class="text-sm">
                         {{ item.text }}
                     </span>
                 </div>
-                <button @click="deleteTask(index)" class="text-red-500 hover:text-red-700">
-                    &#10005; <!-- Cross icon for delete -->
+                <button @click="deleteTask(index)" class="hover:bg-gray-100 text-xs">
+                    ❌
                 </button>
             </li>
         </ul>
 
-        <!-- Add New Task Section -->
-        <div v-if="showInput" class="flex gap-2 items-center mb-4">
-            <input type="text" v-model="newTaskText" placeholder="Enter new task"
-                class="flex-grow p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600" />
-            <button @click="addTask" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                Add
-            </button>
-            <button @click="cancelAddTask" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
-                Cancel
+        <!-- Bottom section with fixed width to prevent layout shift -->
+        <div class="w-full mt-2 flex items-center justify-center">
+            <div v-if="showInput" class="flex gap-1 items-center w-full h-8">
+                <input type="text" v-model="newTaskText" placeholder="Task"
+                    class="flex-grow p-1 text-sm border border-gray-300 rounded dark:bg-gray-700 dark:text-white dark:border-gray-600" />
+                <button @click="addTask"
+                    class="w-8 h-8 bg-green-500 text-white rounded hover:bg-green-600 flex items-center justify-center">
+                    ✅
+                </button>
+                <button @click="cancelAddTask"
+                    class="w-8 h-8 bg-red-500 text-white rounded hover:bg-red-600 flex items-center justify-center">
+                    ❌
+                </button>
+            </div>
+            <!-- Add New Task button with same width and alignment as input section -->
+            <button v-else @click="showInput = true"
+                class="w-full h-8 flex items-center justify-center bg-blue-500 text-white rounded hover:bg-blue-600 text-xs">
+                Add New Task
             </button>
         </div>
-
-        <!-- Show Add New Button if Input is Hidden -->
-        <button v-else @click="showInput = true"
-            class="w-full flex items-center justify-center gap-2 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">
-            <span>+</span> <span>Add New Task</span>
-        </button>
     </div>
 </template>
 
 <script setup lang="ts">
 import { defineProps, ref } from 'vue'
 
-// Define props for the title and list
+
+interface Task {
+    id: string,
+    text: string,
+    status: boolean,
+    mail: string,
+    category: string
+}
+
 const props = defineProps<{
     title: string
-    list: { text: string; completed: boolean }[]
+    list?: Array<Task>
 }>()
 
 const showInput = ref(false)
 const newTaskText = ref('')
 
-// Function to add a new task
 function addTask() {
     if (newTaskText.value.trim()) {
         props.list.push({ text: newTaskText.value, completed: false })
@@ -61,16 +69,13 @@ function addTask() {
     }
 }
 
-// Function to cancel adding a new task
 function cancelAddTask() {
     newTaskText.value = ''
     showInput.value = false
 }
 
-// Function to delete a task
 function deleteTask(index: number) {
     props.list.splice(index, 1)
 }
 </script>
-
-<style scoped></style>
+<style></style>
