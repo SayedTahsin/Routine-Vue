@@ -45,10 +45,11 @@ npm run lint
 - [x] Pinia Setup for User
 - [x] Session Management
 - [x] Task Api Integration
-- [ ] Timer
-- [ ] Disable Other Weekdays
-- [ ] Category List
-- [ ] Note Api integration
+- [x] reset text
+- [x] Disable Other Weekdays
+- [x] Category List
+- [x] fix reload when add task from navbar
+- [ ] consistancy feature
 - [ ] Proper CSS with dark mode w primary/secondary color
-- [ ] fix CORS Error
 - [ ] Deploy on vercel
+- [ ] fix CORS Error

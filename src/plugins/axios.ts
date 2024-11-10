@@ -6,6 +6,5 @@ const axiosInstance = axios.create({
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 })
-// https://routine.mail-tahsin99.workers.dev/
-
+// import.meta.env.VITE_API_URL
 export default axiosInstance
