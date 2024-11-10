@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { inject, ref, watch } from 'vue'
 import { useUserStore } from '../stores/user'
 import TodoList from '../components/TodoListView.vue'
 import axios from '../plugins/axios';
@@ -22,6 +22,8 @@ const userMail = ref<string>()
 const catagorizedTask = ref<Record<string, Array<Task>>>({})
 const categoriesWOWeeks = ref<Array<string>>([])
 const relaodCount = ref(0)
+const triggerReload = inject<number>('triggerReload', 0)
+const triggerReloadFromNavbar = ref(triggerReload)
 
 const getTasksByMail = async () => {
   catagorizedTask.value = {}
@@ -44,6 +46,10 @@ const getTasksByMail = async () => {
   }
   relaodCount.value++
 }
+
+watch(triggerReloadFromNavbar, () => {
+  getTasksByMail()
+})
 
 watch(() => userStore.user, (newUser) => {
   userMail.value = newUser?.mail

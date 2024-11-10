@@ -55,15 +55,25 @@
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-80">
             <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Create New Task</h2>
 
-            <label class="block text-gray-600 dark:text-gray-300 mb-2">Category</label>
-            <input v-model="newTask.category" type="text"
-                class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600 mb-4"
-                placeholder="Enter category" />
-
             <label class="block text-gray-600 dark:text-gray-300 mb-2">Task</label>
             <input v-model="newTask.text" type="text"
                 class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600 mb-4"
-                placeholder="Enter task description" />
+                placeholder="Enter Task" />
+
+            <label class="block text-gray-600 dark:text-gray-300 mb-2">Category</label>
+            <input v-model="newTask.category" type="text" list="categories"
+                class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600 mb-4"
+                placeholder="Enter Category or select a weekday" />
+
+            <datalist id="categories">
+                <option value="Sunday"></option>
+                <option value="Monday"></option>
+                <option value="Tuesday"></option>
+                <option value="Wednesday"></option>
+                <option value="Thursday"></option>
+                <option value="Friday"></option>
+                <option value="Saturday"></option>
+            </datalist>
 
             <div class="flex justify-end gap-2">
                 <button @click="closeModal" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
@@ -131,6 +141,9 @@ function closeModal() {
     newTask.value = { category: '', text: '' }
 }
 
+const emit = defineEmits(['reload'])
+
+
 const addTask$api = async (text: string, category: string) => {
     const url = `/api/tasks`
     const body = {
@@ -141,11 +154,13 @@ const addTask$api = async (text: string, category: string) => {
     try {
         await axios.post(url, body)
         toast.success('Operation Successfull')
+        emit('reload')
     } catch (e) {
         toast.error('Operation Failed')
         console.log(e)
     }
 }
+
 
 function addTask() {
     if (newTask.value.category.trim() && newTask.value.text.trim()) {

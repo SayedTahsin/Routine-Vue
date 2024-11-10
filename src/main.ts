@@ -11,6 +11,7 @@ const toastOptions = {
   timeout: 1000,
   position: POSITION.TOP_CENTER,
   closeButton: 'button',
+  maxToasts: 3,
   icon: true,
 }
 const app = createApp(App)

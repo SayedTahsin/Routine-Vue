@@ -1,13 +1,16 @@
 <template>
     <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-3 w-72 h-80 mx-[1px] flex flex-col">
-        <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-2">{{ title }}</h2>
-
+        <div class="flex items-center justify-between">
+            <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-2">{{ title }}</h2>
+            <span v-if="isToday()" class="text-xs text-gray-500 dark:text-gray-400">Resets at 12:00 AM</span>
+        </div>
+        <hr>
         <ul class="space-y-1 flex-grow overflow-y-auto w-full">
             <li v-for="(item, index) in list" :key="index"
                 class="flex items-center justify-between gap-2 p-1 rounded border border-gray-200 dark:border-gray-700">
                 <div class="flex items-center gap-1">
                     <input type="checkbox" class="h-4 w-4 text-blue-600 dark:text-blue-400" :checked="item.status"
-                        @change="() => updateTask(item.id, !item.status)" />
+                        :disabled="!isToday()" @change="() => updateTask(item.id, !item.status)" />
 
                     <template v-if="editTaskId === item.id">
                         <input type="text" v-model="updatedText"
@@ -28,14 +31,14 @@
         </ul>
 
         <div class="w-full mt-2 flex items-center justify-center">
-            <div v-if="showInput" class="flex gap-1 items-center  h-8">
+            <div v-if="showInput" class="flex gap-1 items-center w-full h-8">
                 <input type="text" v-model="newTaskText" placeholder="Task" @keydown.enter="addTask"
                     class="flex-grow p-1 text-sm border border-gray-300 rounded dark:bg-gray-700 dark:text-white dark:border-gray-600" />
-                <button @click="addTask" class="w-8 h-8  rounded hover:bg-gray-100 flex items-center justify-center">
+                <button @click="addTask" class="w-8 h-8 rounded hover:bg-gray-100 flex items-center justify-center">
                     ✅
                 </button>
                 <button @click="cancelAddTask"
-                    class="w-8 h-8   rounded hover:bg-gray-100 flex items-center justify-center">
+                    class="w-8 h-8 rounded hover:bg-gray-100 flex items-center justify-center">
                     ❌
                 </button>
             </div>
@@ -44,6 +47,7 @@
                 Add New Task
             </button>
         </div>
+
     </div>
 </template>
 
@@ -74,6 +78,10 @@ function editText(taskId: string, currentText: string) {
 }
 
 async function addTask() {
+    if (newTaskText.value === '') {
+        toast.info('cannot add empty tasks')
+        return
+    }
     const url = "/api/tasks"
     try {
         await axios.post(url, {
@@ -121,6 +129,16 @@ async function updateTask(id: string, status?: boolean, text?: string) {
     }
     editTaskId.value = null
     updatedText.value = ''
+}
+
+const isToday = () => {
+    const today = new Date();
+    const weekdayNumber = today.getDay();
+    const weekdayNames = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
+    const weekdayName = weekdayNames[weekdayNumber];
+    if (weekdayNames.includes(props.title) && weekdayName === props.title) {
+        return true
+    } return false
 }
 
 watch(() => userStore.user, (newUser) => {
