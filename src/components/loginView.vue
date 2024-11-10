@@ -16,7 +16,9 @@ import { useUserStore } from '@/stores/user';
 import { auth, provider } from '@/firebase';
 import { signInWithPopup } from 'firebase/auth';
 import { useRouter } from 'vue-router';
+import { useToast } from 'vue-toastification';
 
+const toast = useToast()
 const router = useRouter()
 const userStore = useUserStore();
 
@@ -33,10 +35,11 @@ async function signInWithGoogle() {
         await axios.post('auth/login', userPayload, {
             withCredentials: true,
         });
-
+        toast.success('Login Successfull')
         userStore.setUser(userPayload);
         router.replace({ name: 'routine' });
     } catch (err: unknown) {
+        toast.error('Login failed')
         console.error('Login error:', err);
     }
 }

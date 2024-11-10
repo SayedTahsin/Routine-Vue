@@ -11,35 +11,31 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import TodoList from '../components/TodoListView.vue'
 import { useUserStore } from '../stores/user'
+import TodoList from '../components/TodoListView.vue'
 import axios from '../plugins/axios';
-
-const userStore = useUserStore();
-const userMail = ref<string>()
-
-interface Task {
-  id: string,
-  text: string,
-  status: boolean,
-  mail: string,
-  category: string
-}
+import type { Task } from '@/types/Task';
 
 const fixedCategories = ['SATURDAY', 'SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY']
-
+const userStore = useUserStore();
+const userMail = ref<string>()
 const catagorizedTask = ref<Record<string, Array<Task>>>({})
 const categoriesWOWeeks = ref<Array<string>>([])
 const relaodCount = ref(0)
+
 const getTasksByMail = async () => {
   catagorizedTask.value = {}
+  categoriesWOWeeks.value = []
   const url = `/api/tasks/${userMail.value}`
+
   try {
     const resp = await axios.get(url)
+
     resp.data.results?.forEach((ele: Task) => {
       if (!catagorizedTask.value[ele.category]) catagorizedTask.value[ele.category] = []
       catagorizedTask.value[ele.category].push(ele)
     })
+
     Object.keys(catagorizedTask.value).forEach((val) => {
       if (!fixedCategories.includes(val)) categoriesWOWeeks.value.push(val)
     })
@@ -53,6 +49,6 @@ watch(() => userStore.user, (newUser) => {
   userMail.value = newUser?.mail
   if (userMail.value)
     getTasksByMail()
-
 }, { immediate: true });
+
 </script>
