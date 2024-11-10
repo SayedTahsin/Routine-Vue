@@ -50,6 +50,7 @@ npm run lint
 - [x] Category List
 - [x] fix reload when add task from navbar
 - [ ] consistancy feature
+- [ ] loader
 - [ ] Proper CSS with dark mode w primary/secondary color
 - [ ] Deploy on vercel
 - [ ] fix CORS Error
