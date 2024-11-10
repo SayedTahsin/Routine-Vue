@@ -44,7 +44,10 @@ npm run lint
 - [x] User Api Integration
 - [x] Pinia Setup for User
 - [x] Session Management
-- [ ] Task Api Integration
+- [x] Task Api Integration
+- [ ] Timer
+- [ ] Disable Other Weekdays
+- [ ] Category List
 - [ ] Note Api integration
 - [ ] Proper CSS with dark mode w primary/secondary color
 - [ ] fix CORS Error
