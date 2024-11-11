@@ -24,6 +24,8 @@ onMounted(async () => {
                 mail: resp.data?.mail,
                 name: resp.data?.name,
                 photoUrl: resp.data?.photoUrl,
+                completedTasks: resp.data?.completedTasks,
+                totalTasks: resp.data?.totalTasks
             });
             router.replace({ name: 'routine' });
         } else {

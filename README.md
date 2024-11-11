@@ -49,9 +49,9 @@ npm run lint
 - [x] Disable Other Weekdays
 - [x] Category List
 - [x] fix reload when add task from navbar
-- [ ] consistancy feature
-- [ ] loader
-- [ ] catchAll route
+- [x] consistancy feature
+- [x] loader
+- [x] catchAll route
 - [ ] Proper CSS with dark mode w primary/secondary color
 - [ ] Deploy on vercel
 - [ ] fix CORS Error

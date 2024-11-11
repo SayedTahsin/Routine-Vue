@@ -29,13 +29,14 @@
                 </button>
             </li>
         </ul>
-
         <div class="w-full mt-2 flex items-center justify-center">
-            <div v-if="showInput" class="flex gap-1 items-center w-full h-8">
+            <div v-if="showInput" :class="{ 'pointer-events-none opacity-50': isLoading }"
+                class="flex gap-1 items-center w-full h-8">
                 <input type="text" v-model="newTaskText" placeholder="Task" @keydown.enter="addTask"
                     class="flex-grow p-1 text-sm border border-gray-300 rounded dark:bg-gray-700 dark:text-white dark:border-gray-600" />
                 <button @click="addTask" class="w-8 h-8 rounded hover:bg-gray-100 flex items-center justify-center">
-                    ✅
+                    <span v-if="isLoading" class="dual-ring-loader"></span>
+                    <span v-else>✅</span>
                 </button>
                 <button @click="cancelAddTask"
                     class="w-8 h-8 rounded hover:bg-gray-100 flex items-center justify-center">
@@ -47,7 +48,6 @@
                 Add New Task
             </button>
         </div>
-
     </div>
 </template>
 
@@ -71,6 +71,7 @@ const newTaskText = ref('')
 const editTaskId = ref<string | null>(null)
 const updatedText = ref('')
 const userMail = ref()
+const isLoading = ref(false)
 
 function editText(taskId: string, currentText: string) {
     editTaskId.value = taskId
@@ -78,6 +79,7 @@ function editText(taskId: string, currentText: string) {
 }
 
 async function addTask() {
+    isLoading.value = true
     if (newTaskText.value === '') {
         toast.info('cannot add empty tasks')
         return
@@ -98,6 +100,7 @@ async function addTask() {
     }
     newTaskText.value = ''
     showInput.value = false
+    isLoading.value = false
 }
 
 function cancelAddTask() {
@@ -147,4 +150,25 @@ watch(() => userStore.user, (newUser) => {
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.dual-ring-loader {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 3px solid transparent;
+    border-top: 3px solid #3498db;
+    border-right: 3px solid #3498db;
+    border-radius: 50%;
+    animation: dual-ring-spin 0.8s linear infinite;
+}
+
+@keyframes dual-ring-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+</style>
