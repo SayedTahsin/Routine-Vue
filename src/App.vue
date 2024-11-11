@@ -2,16 +2,15 @@
 import { RouterView } from 'vue-router'
 import Navbar from './components/NavbarView.vue'
 import Footer from './components/FooterView.vue'
-import { provide, ref } from 'vue';
+import { provide, ref } from 'vue'
 
-const triggerReloadFromNavbar = ref(0);
+const triggerReloadFromNavbar = ref(0)
 
-provide('triggerReload', triggerReloadFromNavbar);
+provide('triggerReload', triggerReloadFromNavbar)
 
 const triggerReload = () => {
   triggerReloadFromNavbar.value++
 }
-
 </script>
 
 <template>
