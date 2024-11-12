@@ -1,9 +1,11 @@
 <template>
-  <div :class="[
-    'task-card bg-white dark:bg-gray-800 shadow-lg rounded-lg p-2 mx-1 w-72 h-80 flex flex-col transition-transform duration-500 ease-out',
-    isToday() ? 'highlighted scale-105 mx-4 translate-y-1' : '',
-    'hover:scale-110 hover:translate-y-1 hover:z-90'
-  ]">
+  <div
+    :class="[
+      'task-card bg-white dark:bg-gray-800 shadow-lg rounded-lg p-2 mx-1 w-72 h-80 flex flex-col transition-transform duration-500 ease-out',
+      isToday() ? 'highlighted scale-105 mx-4 translate-y-1' : '',
+      'hover:scale-110 hover:translate-y-1 hover:z-90',
+    ]"
+  >
     <div class="flex items-center justify-between">
       <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-2">
         {{ title }}
@@ -14,48 +16,84 @@
     </div>
     <hr class="mb-1" />
     <ul class="space-y-1 flex-grow overflow-y-auto w-full">
-      <li v-for="(item, index) in list" :key="index"
-        class="task-item flex items-center justify-between gap-2 p-1 rounded border border-gray-200 dark:border-gray-700">
+      <li
+        v-for="(item, index) in list"
+        :key="index"
+        class="task-item flex items-center justify-between gap-2 p-1 rounded border border-gray-200 dark:border-gray-700"
+      >
         <div class="flex items-center gap-1">
-          <input type="checkbox" class="h-4 w-4 text-blue-600 dark:text-blue-400" :checked="item.status"
-            :disabled="isDisabled()" @change="() => updateTask(item.id, !item.status)" />
+          <input
+            type="checkbox"
+            class="h-4 w-4 text-blue-600 dark:text-blue-400"
+            :checked="item.status"
+            :disabled="isDisabled()"
+            @change="() => updateTask(item.id, !item.status)"
+          />
 
           <template v-if="editTaskId === item.id">
-            <input type="text" v-model="updatedText" @keydown.enter="updateTask(item.id, item.status, updatedText)"
-              class="text-sm border border-gray-300 rounded dark:bg-gray-700 dark:text-white dark:border-gray-600 p-1" />
+            <input
+              type="text"
+              v-model="updatedText"
+              @keydown.enter="updateTask(item.id, item.status, updatedText)"
+              class="text-sm border border-gray-300 rounded dark:bg-gray-700 dark:text-white dark:border-gray-600 p-1"
+            />
           </template>
           <template v-else>
             <div>
-              <span @dblclick="editText(item.id, item.text)" :class="{
-                'line-through text-gray-500 dark:text-gray-400': item.status
-              }" class="text-sm">
+              <span
+                @dblclick="editText(item.id, item.text)"
+                :class="{
+                  'line-through text-gray-500 dark:text-gray-400': item.status,
+                }"
+                class="text-sm"
+              >
                 {{ item.text }}
               </span>
             </div>
           </template>
         </div>
-        <button @click="deleteTask(item.id)" class="delete-btn text-xs">❌</button>
+        <button @click="deleteTask(item.id)" class="delete-btn text-xs">
+          ❌
+        </button>
       </li>
     </ul>
     <div class="w-full mt-2 flex items-center justify-center">
-      <div v-if="showInput" :class="{ 'pointer-events-none opacity-50': isLoading }"
-        class="flex gap-1 items-center w-full h-8">
-        <input type="text" v-model="newTaskText" placeholder="Task" @keydown.enter="addTask"
-          class="flex-grow p-1 text-sm border border-gray-300 rounded dark:bg-gray-700 dark:text-white dark:border-gray-600" />
-        <button @click="addTask" class="confirm-btn w-8 h-8 rounded flex items-center justify-center">
+      <div
+        v-if="showInput"
+        :class="{ 'pointer-events-none opacity-50': isLoading }"
+        class="flex gap-1 items-center w-full h-8"
+      >
+        <input
+          type="text"
+          v-model="newTaskText"
+          placeholder="Task"
+          @keydown.enter="addTask"
+          class="flex-grow p-1 text-sm border border-gray-300 rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
+        />
+        <button
+          @click="addTask"
+          class="confirm-btn w-8 h-8 rounded flex items-center justify-center"
+        >
           <span v-if="isLoading" class="dual-ring-loader"></span>
           <span v-else>✅</span>
         </button>
-        <button @click="cancelAddTask" class="cancel-btn w-8 h-8 rounded flex items-center justify-center">❌</button>
+        <button
+          @click="cancelAddTask"
+          class="cancel-btn w-8 h-8 rounded flex items-center justify-center"
+        >
+          ❌
+        </button>
       </div>
-      <button v-else @click="showInput = true"
-        class="add-btn w-full h-8 flex items-center justify-center bg-blue-500 text-white rounded hover:bg-blue-600 text-xs">
+      <button
+        v-else
+        @click="showInput = true"
+        class="add-btn w-full h-8 flex items-center justify-center bg-blue-500 text-white rounded hover:bg-blue-600 text-xs"
+      >
         Add New Task
       </button>
     </div>
   </div>
 </template>
-
 
 <script setup lang="ts">
 import { defineProps, ref, watch } from 'vue'
@@ -160,9 +198,7 @@ const isToday = () => {
 const isDisabled = () => {
   if (!weekdayNames.includes(props.title)) {
     return false
-  }
-  else {
-
+  } else {
     return !isToday()
   }
 }
