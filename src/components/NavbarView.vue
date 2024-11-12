@@ -1,69 +1,55 @@
 <template>
-  <nav
-    class="bg-white dark:bg-gray-800 p-4 shadow-md flex justify-between items-center"
-  >
-    <h1 class="text-xl font-bold text-gray-800 dark:text-white">Routine</h1>
-    <div class="flex items-center gap-4">
-      <button @click="toggleDarkMode" class="p-2 rounded-full">
+  <nav class="bg-background-light dark:bg-background-dark p-4 shadow-md flex justify-between items-center">
+    <h1
+      class="text-xl font-mono text-primary dark:text-primary-dark transition-transform transform duration-300 ease-in-out hover:scale-110">
+      Routine</h1>
+
+    <div class="flex items-center gap-4 ">
+      <button @click="toggleDarkMode"
+        class="p-2 rounded-full text-text-light dark:text-text-dark transition-transform transform duration-300 ease-in-out hover:scale-110">
         <DarkMode v-if="isDarkMode" />
         <LightMode v-else />
       </button>
-      <button v-if="userInfo.mail" @click="openModal" class="p-2 rounded-lg">
+
+      <button v-if="userInfo.mail" @click="openModal"
+        class="p-2 rounded-lg hover:bg-slate-200 transition-transform transform duration-300 ease-in-out hover:scale-110">
         ➕
       </button>
-      <span
-        v-if="userInfo.mail"
-        class="text-xs bg-blue-500 text-white py-1 px-2 rounded-full"
-      >
+
+      <span v-if="userInfo.mail"
+        class="text-xs bg-primary dark:bg-primary-dark text-white py-1 px-2 rounded-full  transition-transform transform duration-300 ease-in-out hover:scale-110">
         Consistency: {{ ' ' + consistency + '%' }}
       </span>
+
       <div v-if="userInfo.mail" class="relative flex items-center gap-2">
-        <!-- <img :src="userInfo.photoUrl" alt="User avatar" class="w-8 h-8 rounded-full" :key="userInfo.photoUrl" /> -->
-        <span
-          @click="toggleDropdown"
-          class="cursor-pointer text-gray-800 dark:text-white"
-        >
+        <span @click="toggleDropdown"
+          class="cursor-pointer ml-4 text-lg text-text-light dark:text-text-dark transition-transform transform duration-300 ease-in-out hover:scale-110">
           {{ userInfo.name }}
-          <div
-            v-if="showDropdown"
-            class="absolute ml-16 mt-6 w-32 opacity-90 bg-white dark:bg-gray-800 shadow-lg rounded-b-md z-10"
-          >
-            <button
-              @click="logout"
-              class="w-full text-left px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              Logout
-            </button>
-          </div>
         </span>
+        <div v-if="showDropdown"
+          class="absolute ml-20 mt-20 w-32 bg-background-light dark:bg-background-dark shadow-lg rounded-md z-10">
+          <button @click="logout"
+            class="w-full text-right px-2  py-2 text-text-light dark:text-text-dark hover:bg-gray-200 dark:hover:bg-gray-900">
+            Logout
+          </button>
+        </div>
       </div>
     </div>
   </nav>
-  <div
-    v-if="showModal"
-    class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
-  >
-    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-80">
-      <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">
-        Create New Task
-      </h2>
-      <label class="block text-gray-600 dark:text-gray-300 mb-2">Task</label>
-      <input
-        v-model="newTask.text"
-        type="text"
-        class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600 mb-4"
-        placeholder="Enter Task"
-      />
-      <label class="block text-gray-600 dark:text-gray-300 mb-2"
-        >Category</label
-      >
-      <input
-        v-model="newTask.category"
-        type="text"
-        list="categories"
-        class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600 mb-4"
-        placeholder="Enter Category or select a weekday"
-      />
+
+  <div v-if="showModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-background-light dark:bg-background-dark p-6 rounded-lg shadow-lg w-80">
+      <h2 class="text-xl font-bold text-text-light dark:text-text-dark mb-4">Create New Task</h2>
+
+      <label class="block text-muted dark:text-gray-300 mb-2">Task</label>
+      <input v-model="newTask.text" type="text"
+        class="w-full p-2 border border-muted rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600 mb-4"
+        placeholder="Enter Task" />
+
+      <label class="block text-muted dark:text-gray-300 mb-2">Category</label>
+      <input v-model="newTask.category" type="text" list="categories"
+        class="w-full p-2 border border-muted rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600 mb-4"
+        placeholder="Enter Category or select a weekday" />
       <datalist id="categories">
         <option value="Sunday"></option>
         <option value="Monday"></option>
@@ -73,17 +59,12 @@
         <option value="Friday"></option>
         <option value="Saturday"></option>
       </datalist>
+
       <div class="flex justify-end gap-2">
-        <button
-          @click="closeModal"
-          class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
-        >
+        <button @click="closeModal" class="px-4 py-2 bg-muted text-white rounded-md hover:bg-gray-600">
           Cancel
         </button>
-        <button
-          @click="addTask"
-          class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-        >
+        <button @click="addTask" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark">
           Add Task
         </button>
       </div>
@@ -110,7 +91,7 @@ const showModal = ref(false)
 const showDropdown = ref(false)
 const newTask = ref({ category: '', text: '' })
 const consistency = computed(() => {
-  if (userInfo.value.totalTasks == 0) return '♾️'
+  if (userInfo.value.totalTasks == 0) return '0.0'
   else {
     const percentage = userInfo.value.completedTask / userInfo.value.totalTasks
     return parseFloat(percentage.toFixed(2)) * 100
@@ -139,22 +120,20 @@ watch(
 )
 
 onMounted(() => {
-  if (
-    window.matchMedia &&
-    window.matchMedia('(prefers-color-scheme: dark)').matches
-  ) {
-    isDarkMode.value = true
-    document.documentElement.classList.add('dark')
+  const storedTheme = localStorage.getItem('darkMode');
+  if (storedTheme) {
+    isDarkMode.value = storedTheme === 'true';
+    document.documentElement.classList.toggle('dark', isDarkMode.value);
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    isDarkMode.value = true;
+    document.documentElement.classList.add('dark');
   }
-})
+});
 
 function toggleDarkMode() {
-  isDarkMode.value = !isDarkMode.value
-  if (isDarkMode.value) {
-    document.documentElement.classList.add('dark')
-  } else {
-    document.documentElement.classList.remove('dark')
-  }
+  isDarkMode.value = !isDarkMode.value;
+  document.documentElement.classList.toggle('dark', isDarkMode.value);
+  localStorage.setItem('darkMode', isDarkMode.value.toString());
 }
 
 function openModal() {

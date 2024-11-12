@@ -14,10 +14,11 @@ const triggerReload = () => {
 </script>
 
 <template>
-  <div class="flex flex-col min-h-screen">
+  <div
+    class="flex flex-col min-h-screen bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
     <Navbar @reload="triggerReload" />
-    <main class="flex-grow">
-      <router-view />
+    <main class="flex-grow p-4 md:p-6 lg:p-8">
+      <RouterView />
     </main>
     <Footer />
   </div>

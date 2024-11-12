@@ -52,6 +52,6 @@ npm run lint
 - [x] consistancy feature
 - [x] loader
 - [x] catchAll route
-- [ ] Proper CSS with dark mode w primary/secondary color
+- [x] Proper CSS with dark mode w primary/secondary color
 - [ ] Deploy on vercel
 - [ ] fix CORS Error
