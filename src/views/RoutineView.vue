@@ -1,29 +1,13 @@
 <template>
-  <div class="p-2 flex" v-if="isLoading">
-    <TodoSkelaonLoader
-      v-for="category in fixedCategories"
-      :key="category"
-      :title="category"
-    />
-  </div>
+  <HomeLoader class="p-2 flex" v-if="isLoading" />
   <div v-else>
     <div class="p-2 flex">
-      <TodoList
-        v-for="category in fixedCategories"
-        :title="category"
-        :list="catagorizedTask[category]"
-        :key="category + '-' + relaodCount"
-        @reload="getTasksByMail"
-      />
+      <TodoList v-for="category in fixedCategories" :title="category" :list="catagorizedTask[category]"
+        :key="category + '-' + relaodCount" @reload="getTasksByMail" />
     </div>
     <div class="p-2 flex">
-      <TodoList
-        v-for="category in categoriesWOWeeks"
-        :title="category"
-        :list="catagorizedTask[category]"
-        :key="category + '-' + relaodCount"
-        @reload="getTasksByMail"
-      />
+      <TodoList v-for="category in categoriesWOWeeks" :title="category" :list="catagorizedTask[category]"
+        :key="category + '-' + relaodCount" @reload="getTasksByMail" />
     </div>
   </div>
 </template>
@@ -34,7 +18,8 @@ import { useUserStore } from '../stores/user'
 import type { Task } from '@/types/Task'
 import TodoList from '../components/TodoListView.vue'
 import axios from '../plugins/axios'
-import TodoSkelaonLoader from '@/components/loader/TodoSkelaonLoader.vue'
+import HomeLoader from '../components/loader/HomeLoader.vue'
+
 
 const fixedCategories = [
   'SATURDAY',
@@ -52,7 +37,7 @@ const categoriesWOWeeks = ref<Array<string>>([])
 const relaodCount = ref(0)
 const triggerReload = inject<number>('triggerReload', 0)
 const triggerReloadFromNavbar = ref(triggerReload)
-const isLoading = ref(false)
+const isLoading = ref(true)
 
 const getTasksByMail = async () => {
   isLoading.value = true

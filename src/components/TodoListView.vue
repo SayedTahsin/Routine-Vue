@@ -1,47 +1,27 @@
 <template>
-  <div
-    class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-3 w-72 h-80 mx-[1px] flex flex-col"
-  >
+  <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-3 w-72 h-80 mx-[1px] flex flex-col">
     <div class="flex items-center justify-between">
       <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-2">
         {{ title }}
       </h2>
-      <span v-if="isToday()" class="text-xs text-gray-500 dark:text-gray-400"
-        >Resets at 12:00 AM</span
-      >
+      <span v-if="isToday()" class="text-xs text-gray-500 dark:text-gray-400">Resets at 12:00 AM</span>
     </div>
-    <hr />
+    <hr class="mb-1" />
     <ul class="space-y-1 flex-grow overflow-y-auto w-full">
-      <li
-        v-for="(item, index) in list"
-        :key="index"
-        class="flex items-center justify-between gap-2 p-1 rounded border border-gray-200 dark:border-gray-700"
-      >
+      <li v-for="(item, index) in list" :key="index"
+        class="flex items-center justify-between gap-2 p-1 rounded border border-gray-200 dark:border-gray-700">
         <div class="flex items-center gap-1">
-          <input
-            type="checkbox"
-            class="h-4 w-4 text-blue-600 dark:text-blue-400"
-            :checked="item.status"
-            :disabled="!isToday()"
-            @change="() => updateTask(item.id, !item.status)"
-          />
+          <input type="checkbox" class="h-4 w-4 text-blue-600 dark:text-blue-400" :checked="item.status"
+            :disabled="!isToday()" @change="() => updateTask(item.id, !item.status)" />
 
           <template v-if="editTaskId === item.id">
-            <input
-              type="text"
-              v-model="updatedText"
-              @keydown.enter="updateTask(item.id, item.status, updatedText)"
-              class="text-sm border border-gray-300 rounded dark:bg-gray-700 dark:text-white dark:border-gray-600 p-1"
-            />
+            <input type="text" v-model="updatedText" @keydown.enter="updateTask(item.id, item.status, updatedText)"
+              class="text-sm border border-gray-300 rounded dark:bg-gray-700 dark:text-white dark:border-gray-600 p-1" />
           </template>
           <template v-else>
-            <span
-              @dblclick="editText(item.id, item.text)"
-              :class="{
-                'line-through text-gray-500 dark:text-gray-400': item.status,
-              }"
-              class="text-sm"
-            >
+            <span @dblclick="editText(item.id, item.text)" :class="{
+              'line-through text-gray-500 dark:text-gray-400': item.status,
+            }" class="text-sm">
               {{ item.text }}
             </span>
           </template>
@@ -52,37 +32,20 @@
       </li>
     </ul>
     <div class="w-full mt-2 flex items-center justify-center">
-      <div
-        v-if="showInput"
-        :class="{ 'pointer-events-none opacity-50': isLoading }"
-        class="flex gap-1 items-center w-full h-8"
-      >
-        <input
-          type="text"
-          v-model="newTaskText"
-          placeholder="Task"
-          @keydown.enter="addTask"
-          class="flex-grow p-1 text-sm border border-gray-300 rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
-        />
-        <button
-          @click="addTask"
-          class="w-8 h-8 rounded hover:bg-gray-100 flex items-center justify-center"
-        >
+      <div v-if="showInput" :class="{ 'pointer-events-none opacity-50': isLoading }"
+        class="flex gap-1 items-center w-full h-8">
+        <input type="text" v-model="newTaskText" placeholder="Task" @keydown.enter="addTask"
+          class="flex-grow p-1 text-sm border border-gray-300 rounded dark:bg-gray-700 dark:text-white dark:border-gray-600" />
+        <button @click="addTask" class="w-8 h-8 rounded hover:bg-gray-100 flex items-center justify-center">
           <span v-if="isLoading" class="dual-ring-loader"></span>
           <span v-else>✅</span>
         </button>
-        <button
-          @click="cancelAddTask"
-          class="w-8 h-8 rounded hover:bg-gray-100 flex items-center justify-center"
-        >
+        <button @click="cancelAddTask" class="w-8 h-8 rounded hover:bg-gray-100 flex items-center justify-center">
           ❌
         </button>
       </div>
-      <button
-        v-else
-        @click="showInput = true"
-        class="w-full h-8 flex items-center justify-center bg-blue-500 text-white rounded hover:bg-blue-600 text-xs"
-      >
+      <button v-else @click="showInput = true"
+        class="w-full h-8 flex items-center justify-center bg-blue-500 text-white rounded hover:bg-blue-600 text-xs">
         Add New Task
       </button>
     </div>
