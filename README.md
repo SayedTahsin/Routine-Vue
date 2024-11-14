@@ -38,4 +38,4 @@ npm run lint
 - [x] catchAll route
 - [x] Proper CSS with dark mode w primary/secondary color
 - [x] Deploy on vercel
-- [ ] fix CORS Error
+- [x] fix CORS Error
