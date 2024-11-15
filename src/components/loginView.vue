@@ -57,7 +57,7 @@ async function signInWithGoogle() {
 
     toast.success('Login Successful')
     userStore.setUser(userPayload)
-    router.replace({ name: 'routine' })
+    router.replace({ name: 'user' })
   } catch (err: unknown) {
     toast.error('Login failed')
     console.error('Login error:', err)
