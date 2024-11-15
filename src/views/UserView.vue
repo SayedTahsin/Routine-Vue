@@ -8,18 +8,15 @@
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { jwtDecode } from 'jwt-decode'
-import { useToast } from 'vue-toastification'
 import { useUserStore } from '@/stores/user'
 import { getCookie } from 'tiny-cookie'
 import axios from '../plugins/axios'
 const router = useRouter()
 const userStore = useUserStore()
-const toast = useToast()
 
 onMounted(async () => {
   try {
     const token = getCookie('ROUTINEAPP')
-    toast.success(token)
     if (token) {
       const decoded = jwtDecode<{
         name: string
@@ -34,13 +31,13 @@ onMounted(async () => {
         completedTasks: resp.data?.completedTasks,
         totalTasks: resp.data?.totalTasks,
       })
-      router.replace({ name: 'routine' })
+      router.push({ name: 'routine' })
     } else {
-      router.replace({ name: 'login' })
+      router.push({ name: 'login' })
     }
   } catch (e) {
     console.error(e)
-    router.replace({ name: 'login' })
+    router.push({ name: 'login' })
   }
 })
 </script>
