@@ -1,6 +1,6 @@
 <template>
   <nav class="bg-background-light dark:bg-background-dark p-4 shadow-md flex justify-between items-center">
-    <h1
+    <h1 @click="refresh"
       class="text-xl font-mono text-primary dark:text-primary-dark transition-transform transform duration-300 ease-in-out hover:scale-110">
       Routine
     </h1>
@@ -78,7 +78,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from 'vue'
 import { useUserStore } from '@/stores/user'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import axios from '../plugins/axios'
 import DarkMode from './icons/DarkMode.vue'
@@ -88,6 +88,7 @@ const emit = defineEmits(['reload'])
 
 const userStore = useUserStore()
 const router = useRouter()
+const route = useRoute()
 const toast = useToast()
 const isDarkMode = ref(false)
 const showModal = ref(false)
@@ -194,6 +195,12 @@ async function logout() {
     console.error('Error logging out:', error)
   }
 }
+
+function refresh() {
+  if (route.name === 'routine')
+    emit('reload')
+}
+
 </script>
 
 <style scoped></style>
