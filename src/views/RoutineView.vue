@@ -3,24 +3,14 @@
     <div>
       <HomeLoader class="flex" :class="{ 'invisible opacity-0': !isLoading }" />
     </div>
-    <div class="p-4">
-      <div class="pb-8 flex">
-        <TodoList
-          v-for="category in fixedCategories"
-          :title="category"
-          :list="catagorizedTask[category]"
-          :key="category + '-' + relaodCount"
-          @reload="getTasksByMail"
-        />
+    <div class="p-8">
+      <div class="flex pb-8">
+        <TodoList class="" v-for="category in fixedCategories" :title="category" :list="catagorizedTask[category]"
+          :key="category + '-' + relaodCount" @reload="getTasksByMail" />
       </div>
-      <div class="flex">
-        <TodoList
-          v-for="category in categoriesWOWeeks"
-          :title="category"
-          :list="catagorizedTask[category]"
-          :key="category + '-' + relaodCount"
-          @reload="getTasksByMail"
-        />
+      <div class="flex ">
+        <TodoList v-for="category in categoriesWOWeeks" :title="category" :list="catagorizedTask[category]"
+          :key="category + '-' + relaodCount" @reload="getTasksByMail" />
       </div>
     </div>
   </div>
