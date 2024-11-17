@@ -58,5 +58,5 @@ $ npm run dev
 - [x] Deploy on vercel
 - [x] fix CORS Error
 - [ ] fix cookies issue
-- [ ] New Loader
-- [ ] Re-structure
+- [x] new Loader
+- [x] Re-structure

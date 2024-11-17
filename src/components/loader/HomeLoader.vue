@@ -1,29 +1,29 @@
 <template>
-  <div
-    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-    aria-label="Loading"
-  >
-    <div class="loader"></div>
+  <div class="relative w-full h-1 overflow-hidden">
+    <div class="absolute h-full bg-blue-500 animate-glow-loader"></div>
   </div>
 </template>
 
 <style scoped>
-.loader {
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #3498db;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
+@keyframes glow {
   0% {
-    transform: rotate(0deg);
+    transform: translateX(-100%);
+    opacity: 0.2;
+  }
+
+  50% {
+    transform: translateX(0);
+    opacity: 0.8;
   }
 
   100% {
-    transform: rotate(360deg);
+    transform: translateX(100%);
+    opacity: 0.2;
   }
+}
+
+.animate-glow-loader {
+  animation: glow 1.5s infinite linear;
+  width: 150%;
 }
 </style>

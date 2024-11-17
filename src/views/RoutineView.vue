@@ -1,23 +1,27 @@
 <template>
-  <HomeLoader class="p-2 flex" v-if="isLoading" />
-  <div v-else>
-    <div class="p-2 flex">
-      <TodoList
-        v-for="category in fixedCategories"
-        :title="category"
-        :list="catagorizedTask[category]"
-        :key="category + '-' + relaodCount"
-        @reload="getTasksByMail"
-      />
+  <div class="relative">
+    <div>
+      <HomeLoader class="flex" :class="{ 'invisible opacity-0': !isLoading }" />
     </div>
-    <div class="p-2 flex">
-      <TodoList
-        v-for="category in categoriesWOWeeks"
-        :title="category"
-        :list="catagorizedTask[category]"
-        :key="category + '-' + relaodCount"
-        @reload="getTasksByMail"
-      />
+    <div class="p-4">
+      <div class="pb-8 flex">
+        <TodoList
+          v-for="category in fixedCategories"
+          :title="category"
+          :list="catagorizedTask[category]"
+          :key="category + '-' + relaodCount"
+          @reload="getTasksByMail"
+        />
+      </div>
+      <div class="flex">
+        <TodoList
+          v-for="category in categoriesWOWeeks"
+          :title="category"
+          :list="catagorizedTask[category]"
+          :key="category + '-' + relaodCount"
+          @reload="getTasksByMail"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -62,7 +66,6 @@ const getTasksByMail = async () => {
         catagorizedTask.value[ele.category] = []
       catagorizedTask.value[ele.category].push(ele)
     })
-
     Object.keys(catagorizedTask.value).forEach(val => {
       if (!fixedCategories.includes(val)) categoriesWOWeeks.value.push(val)
     })
@@ -81,8 +84,9 @@ watch(
   () => userStore.user,
   newUser => {
     userMail.value = newUser?.mail
-    if (userMail.value) getTasksByMail()
+    if (userMail.value) {
+      getTasksByMail()
+    }
   },
-  { immediate: true },
 )
 </script>

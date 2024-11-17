@@ -3,7 +3,6 @@ import axios from '../plugins/axios'
 export const useApis = () => {
   const userStore = useUserStore()
   const fetchAndSetUser = async (mail: string) => {
-    console.log(mail)
     try {
       const resp = await axios.get(`/api/users/${mail}`)
       userStore.setUser({

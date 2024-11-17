@@ -126,6 +126,7 @@ async function addTask() {
   isLoading.value = true
   if (newTaskText.value === '') {
     toast.info('Cannot add empty tasks')
+    isLoading.value = false
     return
   }
   const url = '/api/tasks'
