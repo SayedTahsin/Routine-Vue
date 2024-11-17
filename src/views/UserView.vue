@@ -8,11 +8,11 @@
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { jwtDecode } from 'jwt-decode'
-import { useUserStore } from '@/stores/user'
 import { getCookie } from 'tiny-cookie'
-import axios from '../plugins/axios'
+import { useApis } from '../composable/api'
+
 const router = useRouter()
-const userStore = useUserStore()
+const { fetchAndSetUser } = useApis()
 
 onMounted(async () => {
   try {
@@ -23,14 +23,7 @@ onMounted(async () => {
         mail: string
         photoUrl: string
       }>(token)
-      const resp = await axios.get(`/api/users/${decoded.mail}`)
-      userStore.setUser({
-        mail: resp.data?.mail,
-        name: resp.data?.name,
-        photoUrl: resp.data?.photoUrl,
-        completedTasks: resp.data?.completedTasks,
-        totalTasks: resp.data?.totalTasks,
-      })
+      fetchAndSetUser(decoded.mail)
       router.push({ name: 'routine' })
     } else {
       router.push({ name: 'login' })

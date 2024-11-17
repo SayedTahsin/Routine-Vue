@@ -1,36 +1,53 @@
 <template>
-  <nav class="bg-background-light dark:bg-background-dark p-4 shadow-md flex justify-between items-center">
-    <h1 @click="refresh"
-      class="text-xl font-mono text-primary dark:text-primary-dark transition-transform transform duration-300 ease-in-out hover:scale-110">
+  <nav
+    class="bg-background-light dark:bg-background-dark p-4 shadow-md flex justify-between items-center"
+  >
+    <h1
+      @click="refresh"
+      class="text-xl font-mono text-primary dark:text-primary-dark transition-transform transform duration-300 ease-in-out hover:scale-110"
+    >
       Routine
     </h1>
 
     <div class="flex items-center gap-4">
-      <button @click="toggleDarkMode"
-        class="p-2 rounded-full text-text-light dark:text-text-dark transition-transform transform duration-300 ease-in-out hover:scale-110">
+      <button
+        @click="toggleDarkMode"
+        class="p-2 rounded-full text-text-light dark:text-text-dark transition-transform transform duration-300 ease-in-out hover:scale-110"
+      >
         <DarkMode v-if="isDarkMode" />
         <LightMode v-else />
       </button>
 
-      <button v-if="userInfo.mail" @click="openModal"
-        class="p-2 rounded-lg hover:bg-slate-200 transition-transform transform duration-300 ease-in-out hover:scale-110">
+      <button
+        v-if="userInfo.mail"
+        @click="openModal"
+        class="p-2 rounded-lg hover:bg-slate-200 transition-transform transform duration-300 ease-in-out hover:scale-110"
+      >
         ➕
       </button>
 
-      <span v-if="userInfo.mail"
-        class="text-xs bg-primary dark:bg-primary-dark text-white py-1 px-2 rounded-full transition-transform transform duration-300 ease-in-out hover:scale-110">
+      <span
+        v-if="userInfo.mail"
+        class="text-xs bg-primary dark:bg-primary-dark text-white py-1 px-2 rounded-full transition-transform transform duration-300 ease-in-out hover:scale-110"
+      >
         Consistency: {{ ' ' + consistency + '%' }}
       </span>
 
       <div v-if="userInfo.mail" class="relative flex items-center gap-2">
-        <span @click="toggleDropdown"
-          class="cursor-pointer ml-4 text-lg text-text-light dark:text-text-dark transition-transform transform duration-300 ease-in-out hover:scale-110">
+        <span
+          @click="toggleDropdown"
+          class="cursor-pointer ml-4 text-lg text-text-light dark:text-text-dark transition-transform transform duration-300 ease-in-out hover:scale-110"
+        >
           {{ userInfo.name }}
         </span>
-        <div v-if="showDropdown"
-          class="absolute ml-20 mt-20 w-32 bg-background-light dark:bg-background-dark shadow-lg rounded-md z-10">
-          <button @click="logout"
-            class="w-full text-right px-2 py-2 text-text-light dark:text-text-dark hover:bg-gray-200 dark:hover:bg-gray-900">
+        <div
+          v-if="showDropdown"
+          class="absolute ml-20 mt-20 w-32 bg-background-light dark:bg-background-dark shadow-lg rounded-md z-10"
+        >
+          <button
+            @click="logout"
+            class="w-full text-right px-2 py-2 text-text-light dark:text-text-dark hover:bg-gray-200 dark:hover:bg-gray-900"
+          >
             Logout
           </button>
         </div>
@@ -38,21 +55,33 @@
     </div>
   </nav>
 
-  <div v-if="showModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-background-light dark:bg-background-dark p-6 rounded-lg shadow-lg w-80">
+  <div
+    v-if="showModal"
+    class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
+  >
+    <div
+      class="bg-background-light dark:bg-background-dark p-6 rounded-lg shadow-lg w-80"
+    >
       <h2 class="text-xl font-bold text-text-light dark:text-text-dark mb-4">
         Create New Task
       </h2>
 
       <label class="block text-muted dark:text-gray-300 mb-2">Task</label>
-      <input v-model="newTask.text" type="text"
+      <input
+        v-model="newTask.text"
+        type="text"
         class="w-full p-2 border border-muted rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600 mb-4"
-        placeholder="Enter Task" />
+        placeholder="Enter Task"
+      />
 
       <label class="block text-muted dark:text-gray-300 mb-2">Category</label>
-      <input v-model="newTask.category" type="text" list="categories"
+      <input
+        v-model="newTask.category"
+        type="text"
+        list="categories"
         class="w-full p-2 border border-muted rounded-md dark:bg-gray-700 dark:text-white dark:border-gray-600 mb-4"
-        placeholder="Enter Category or select a weekday" />
+        placeholder="Enter Category or select a weekday"
+      />
       <datalist id="categories">
         <option value="Sunday"></option>
         <option value="Monday"></option>
@@ -64,10 +93,16 @@
       </datalist>
 
       <div class="flex justify-end gap-2">
-        <button @click="closeModal" class="px-4 py-2 bg-muted text-white rounded-md hover:bg-gray-600">
+        <button
+          @click="closeModal"
+          class="px-4 py-2 bg-muted text-white rounded-md hover:bg-gray-600"
+        >
           Cancel
         </button>
-        <button @click="addTask" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark">
+        <button
+          @click="addTask"
+          class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark"
+        >
           Add Task
         </button>
       </div>
@@ -197,10 +232,8 @@ async function logout() {
 }
 
 function refresh() {
-  if (route.name === 'routine')
-    emit('reload')
+  if (route.name === 'routine') emit('reload')
 }
-
 </script>
 
 <style scoped></style>
