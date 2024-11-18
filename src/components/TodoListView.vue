@@ -87,12 +87,11 @@ function editText(taskId: string, currentText: string) {
 }
 
 async function addTask() {
-  isLoading.value = true
   if (newTaskText.value === '') {
-    toast.info('Cannot add empty tasks')
-    isLoading.value = false
+    toast.info('Can\'t add empty tasks')
     return
   }
+  isLoading.value = true
   const url = '/api/tasks'
   try {
     await axios.post(url, {
@@ -129,6 +128,12 @@ async function deleteTask(id: string) {
 }
 
 async function updateTask(id: string, status?: boolean, text?: string) {
+
+  if (text === '') {
+    toast.info('Tasks can\'t be empty')
+    return
+  }
+
   const url = `/api/tasks/${id}`
   try {
     await axios.put(url, { status, text })

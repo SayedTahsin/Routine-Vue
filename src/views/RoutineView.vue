@@ -44,24 +44,27 @@ const isLoading = ref(true)
 
 const getTasksByMail = async () => {
   isLoading.value = true
-  catagorizedTask.value = {}
-  categoriesWOWeeks.value = []
+  const tempCatagorizedTask: Record<string, Array<Task>> = {}
+  const tempCategoriesWOWeeks: Array<string> = []
   const url = `/api/tasks/${userMail.value}`
 
   try {
     const resp = await axios.get(url)
 
     resp.data.results?.forEach((ele: Task) => {
-      if (!catagorizedTask.value[ele.category])
-        catagorizedTask.value[ele.category] = []
-      catagorizedTask.value[ele.category].push(ele)
+      if (!tempCatagorizedTask[ele.category]) {
+        tempCatagorizedTask[ele.category] = []
+      }
+      tempCatagorizedTask[ele.category].push(ele)
     })
-    Object.keys(catagorizedTask.value).forEach(val => {
-      if (!fixedCategories.includes(val)) categoriesWOWeeks.value.push(val)
+    Object.keys(tempCatagorizedTask).forEach(val => {
+      if (!fixedCategories.includes(val)) tempCategoriesWOWeeks.push(val)
     })
   } catch (e) {
     console.log(e)
   }
+  categoriesWOWeeks.value = tempCategoriesWOWeeks
+  catagorizedTask.value = tempCatagorizedTask
   relaodCount.value++
   isLoading.value = false
 }
