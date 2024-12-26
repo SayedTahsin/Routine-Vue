@@ -23,7 +23,6 @@
 
 <script setup lang="ts">
 import axios from '../plugins/axios'
-import { useUserStore } from '@/stores/user'
 import { auth, provider } from '@/firebase'
 import { signInWithPopup } from 'firebase/auth'
 import { useRouter } from 'vue-router'
@@ -34,7 +33,6 @@ import { ref } from 'vue'
 
 const toast = useToast()
 const router = useRouter()
-const userStore = useUserStore()
 const isLoading = ref(false)
 const { fetchAndSetUser } = useApis()
 
@@ -53,13 +51,8 @@ async function signInWithGoogle() {
       withCredentials: true,
     })
 
-    await axios.post('auth/login', userPayload, {
-      withCredentials: true,
-    })
-
     fetchAndSetUser(userPayload.mail)
     toast.success('Login Successful')
-    userStore.setUser(userPayload)
     router.push({ name: 'routine' })
   } catch (err: unknown) {
     toast.error('Login failed')

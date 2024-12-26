@@ -7,30 +7,21 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { jwtDecode } from 'jwt-decode'
-import { getCookie } from 'tiny-cookie'
 import { useApis } from '../composable/api'
+import { onAuthStateChanged } from 'firebase/auth'
+import { auth } from '../firebase'
 
 const router = useRouter()
 const { fetchAndSetUser } = useApis()
 
 onMounted(async () => {
-  try {
-    const token = getCookie('ROUTINEAPP')
-    if (token) {
-      const decoded = jwtDecode<{
-        name: string
-        mail: string
-        photoUrl: string
-      }>(token)
-      fetchAndSetUser(decoded.mail)
+  onAuthStateChanged(auth, async user => {
+    if (user) {
+      await fetchAndSetUser(user.email as string)
       router.push({ name: 'routine' })
     } else {
       router.push({ name: 'login' })
     }
-  } catch (e) {
-    console.error(e)
-    router.push({ name: 'login' })
-  }
+  })
 })
 </script>

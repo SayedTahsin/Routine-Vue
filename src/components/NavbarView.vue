@@ -36,14 +36,21 @@
       <div v-if="userInfo.mail" class="relative flex items-center gap-2">
         <span
           @click="toggleDropdown"
+          ref="dropdownRef"
           class="cursor-pointer ml-4 text-lg text-text-light dark:text-text-dark transition-transform transform duration-300 ease-in-out hover:scale-110"
         >
           {{ userInfo.name }}
         </span>
         <div
           v-if="showDropdown"
-          class="absolute ml-20 mt-20 w-32 bg-background-light dark:bg-background-dark shadow-lg rounded-md z-10"
+          class="absolute ml-12 mt-32 w-4/5 bg-background-light dark:bg-background-dark shadow-lg rounded-md z-10"
         >
+          <button
+            @click="resetConsistency"
+            class="w-full text-right px-2 py-2 text-text-light dark:text-text-dark hover:bg-gray-200 dark:hover:bg-gray-900"
+          >
+            Reset Consistency
+          </button>
           <button
             @click="logout"
             class="w-full text-right px-2 py-2 text-text-light dark:text-text-dark hover:bg-gray-200 dark:hover:bg-gray-900"
@@ -111,13 +118,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, computed } from 'vue'
+import { ref, onMounted, watch, computed, onUnmounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import axios from '../plugins/axios'
 import DarkMode from './icons/DarkMode.vue'
 import LightMode from './icons/LightMode.vue'
+import { signOut } from 'firebase/auth'
+import { auth } from '../firebase'
 
 const emit = defineEmits(['reload'])
 
@@ -128,6 +137,7 @@ const toast = useToast()
 const isDarkMode = ref(false)
 const showModal = ref(false)
 const showDropdown = ref(false)
+const dropdownRef = ref<HTMLElement | null>(null)
 const newTask = ref({ category: '', text: '' })
 const consistency = computed(() => {
   if (userInfo.value.totalTasks == 0) return '0.0'
@@ -170,7 +180,18 @@ onMounted(() => {
     isDarkMode.value = true
     document.documentElement.classList.add('dark')
   }
+  document.addEventListener('click', handleClickOutside)
 })
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
+
+function handleClickOutside(event: MouseEvent) {
+  if (dropdownRef.value && !dropdownRef.value.contains(event.target as Node)) {
+    showDropdown.value = false
+  }
+}
 
 function toggleDarkMode() {
   isDarkMode.value = !isDarkMode.value
@@ -219,15 +240,32 @@ function toggleDropdown() {
 }
 
 async function logout() {
+  signOut(auth)
+    .then(() => {
+      showDropdown.value = false
+      userInfo.value.mail = ''
+      toast.success('Logout Successfull')
+      router.push('login')
+    })
+    .catch(error => {
+      toast.error('Logout failed')
+      console.error('Sign-out error:', error)
+    })
+}
+
+async function resetConsistency() {
+  const url = `/api/users/${userInfo.value.mail}`
+  const body = {
+    completedTasks: 0,
+    totalTasks: 0,
+  }
   try {
-    await axios.post('/auth/logout')
-    showDropdown.value = false
-    userInfo.value.mail = ''
-    toast.success('Logout Successfull')
-    router.push('login')
-  } catch (error) {
-    toast.error('Logout failed')
-    console.error('Error logging out:', error)
+    await axios.put(url, body)
+    toast.success('Consistency Reset Successfull')
+    refresh()
+  } catch (e) {
+    toast.error('Consistency Reset Failed')
+    console.log(e)
   }
 }
 
