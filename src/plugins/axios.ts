@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getAuth } from 'firebase/auth'
 
 const baseURL =
   import.meta.env.MODE === 'development'
@@ -11,5 +12,23 @@ const axiosInstance = axios.create({
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 })
+
+// Add a request interceptor
+axiosInstance.interceptors.request.use(
+  async config => {
+    const auth = getAuth()
+    const user = auth.currentUser
+
+    if (user) {
+      const token = await user.getIdToken()
+      config.headers.Authorization = `Bearer ${token}`
+    }
+
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  },
+)
 
 export default axiosInstance
