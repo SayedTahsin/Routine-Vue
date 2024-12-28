@@ -2,9 +2,9 @@ import { useUserStore } from '@/stores/user'
 import axios from '../plugins/axios'
 export const useApis = () => {
   const userStore = useUserStore()
-  const fetchAndSetUser = async (mail: string) => {
+  const fetchAndSetUser = async () => {
     try {
-      const resp = await axios.get(`/api/users/${mail}`)
+      const resp = await axios.get(`/api/users`)
       userStore.setUser({
         mail: resp.data?.mail,
         name: resp.data?.name,

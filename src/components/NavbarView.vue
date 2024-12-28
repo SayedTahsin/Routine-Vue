@@ -213,7 +213,6 @@ const addTask$api = async (text: string, category: string) => {
   const body = {
     text,
     category,
-    mail: userInfo.value.mail,
   }
   try {
     await axios.post(url, body)
@@ -254,7 +253,7 @@ async function logout() {
 }
 
 async function resetConsistency() {
-  const url = `/api/users/${userInfo.value.mail}`
+  const url = `/api/users`
   const body = {
     completedTasks: 0,
     totalTasks: 0,

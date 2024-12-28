@@ -132,7 +132,6 @@ async function addTask() {
     await axios.post(url, {
       text: newTaskText.value,
       category: props.title,
-      mail: userMail.value,
     })
     toast.success('Task added successfully')
     emit('reload')

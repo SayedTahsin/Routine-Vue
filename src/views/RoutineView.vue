@@ -57,7 +57,7 @@ const getTasksByMail = async () => {
   isLoading.value = true
   const tempCatagorizedTask: Record<string, Array<Task>> = {}
   const tempCategoriesWOWeeks: Array<string> = []
-  const url = `/api/tasks/${userMail.value}`
+  const url = `/api/tasks`
 
   try {
     const resp = await axios.get(url)

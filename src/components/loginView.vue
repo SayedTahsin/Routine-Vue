@@ -51,7 +51,7 @@ async function signInWithGoogle() {
       withCredentials: true,
     })
 
-    fetchAndSetUser(userPayload.mail)
+    fetchAndSetUser()
     toast.success('Login Successful')
     router.push({ name: 'routine' })
   } catch (err: unknown) {
