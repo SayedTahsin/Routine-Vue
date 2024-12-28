@@ -17,7 +17,7 @@ const { fetchAndSetUser } = useApis()
 onMounted(async () => {
   onAuthStateChanged(auth, async user => {
     if (user) {
-      await fetchAndSetUser(user.email as string)
+      await fetchAndSetUser()
       router.push({ name: 'routine' })
     } else {
       router.push({ name: 'login' })
